@@ -25,7 +25,7 @@ pipeline {
                 echo 'Deploying...'
                 sh "ssh -i ~/.ssh/id_rsa vagrant@192.168.105.3 'sudo docker stop running-api || true'"
                 sh "ssh -i ~/.ssh/id_rsa vagrant@192.168.105.3 'sudo docker rm running-api || true'"
-                sh "ssh -i ~/.ssh/id_rsa vagrant@192.168.105.3 'sudo docker run --pull always -d --restart=unless-stopped --name running-api -p 3000:3000 ttl.sh/amazing-api:1h'"
+                sh "ssh -i ~/.ssh/id_rsa vagrant@192.168.105.3 'sudo docker run --pull always -d --restart=unless-stopped --name running-api -p 8080:8080 ttl.sh/amazing-api:1h'"
             }
         }
     }
