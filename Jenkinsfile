@@ -8,7 +8,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Cloning repo'
-                git branch: 'main', url: 'https://github.com/dimka3553/amazing-api.git'
+                git branch: 'k8s', url: 'https://github.com/dimka3553/amazing-api.git'
             }
         }
         stage('Build Docker') {
@@ -23,11 +23,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
-                sh "ssh -i ~/.ssh/id_rsa vagrant@192.168.105.3 'sudo docker stop running-api || true'"
-                sh "ssh -i ~/.ssh/id_rsa vagrant@192.168.105.3 'sudo docker rm running-api || true'"
-                sh "ssh -i ~/.ssh/id_rsa vagrant@192.168.105.3 'sudo docker run --pull always -d --restart=unless-stopped --name running-api -p 8080:8080 ttl.sh/amazing-api:1h'"
+                sh 'ssh-keyscan 192.168.105.4 > ~/.ssh/known_hosts'
+                sh 'scp deployment.yaml vagrant@192.168.105.4:/home/vagrant'
+                sh "ssh vagrant@192.168.105.4 'kubectl apply -f /home/vagrant/deployment.yaml'"
             }
         }
+
     }
 
     post {
