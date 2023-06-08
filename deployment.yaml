@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amazing-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: amazing-api
+  template:
+    metadata:
+      labels:
+        app: amazing-api
+    spec:
+      containers:
+      - name: amazing-api
+        image: ttl.sh/amazing-api:1h
+        ports:
+        - containerPort: 8080
